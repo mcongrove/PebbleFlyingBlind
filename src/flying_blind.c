@@ -66,69 +66,27 @@ static void handle_minute_tick(struct tm *tick_time, TimeUnits units_changed) {
 	time_t now = time(NULL);
 	struct tm *t = localtime(&now);
 	
-	int tHour = 5;
-	int tMin = 0;
-	
-	uint32_t segments[25];
-	segments[0] = 100;
-	
-	if (tMin == 0) {
-		if (tHour == 1) {
-				static const uint32_t const segments1[] = { 500, 100, 100 };
-				VibePattern pat = { .durations = segments1, .num_segments = ARRAY_LENGTH(segments1) };
-		} else if (tHour == 2) {
-				static const uint32_t const segments2[] = { 500, 100, 100, 100, 100 };
-				VibePattern pat = { .durations = segments2, .num_segments = ARRAY_LENGTH(segments2) };
-		} else if (tHour == 3) {
-				static const uint32_t const segments3[] = { 500, 100, 100, 100, 100, 100, 100 };
-				VibePattern pat = { .durations = segments3, .num_segments = ARRAY_LENGTH(segments3) };
-		} else if (tHour == 4) {
-				static const uint32_t const segments4[] = { 500, 100, 100, 100, 100, 100, 100, 100, 100 };
-				VibePattern pat = { .durations = segments4, .num_segments = ARRAY_LENGTH(segments4) };
-		} else if (tHour == 5) {
-				static const uint32_t const segments5[] = { 500, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
-				VibePattern pat = { .durations = segments5, .num_segments = ARRAY_LENGTH(segments5) };
-		} else if (tHour == 6) {
-				static const uint32_t const segments6[] = { 500, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
-				VibePattern pat = { .durations = segments6, .num_segments = ARRAY_LENGTH(segments6) };
-		} else if (tHour == 7) {
-				static const uint32_t const segments7[] = { 500, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
-				VibePattern pat = { .durations = segments7, .num_segments = ARRAY_LENGTH(segments7) };
-		} else if (tHour == 8) {
-				static const uint32_t const segments8[] = { 500, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
-				VibePattern pat = { .durations = segments8, .num_segments = ARRAY_LENGTH(segments8) };
-		} else if (tHour == 9) {
-				static const uint32_t const segments9[] = { 500, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
-				VibePattern pat = { .durations = segments9, .num_segments = ARRAY_LENGTH(segments9) };
-		} else if (tHour == 10) {
-				static const uint32_t const segments10[] = { 500, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
-				VibePattern pat = { .durations = segments10, .num_segments = ARRAY_LENGTH(segments10) };
-		} else if (tHour == 11) {
-				static const uint32_t const segments11[] = { 500, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
-				VibePattern pat = { .durations = segments11, .num_segments = ARRAY_LENGTH(segments11) };
-		} else if (tHour == 12) {
-				static const uint32_t const segments12[] = { 500, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
-				VibePattern pat = { .durations = segments12, .num_segments = ARRAY_LENGTH(segments12) };
-		}
-	}
-	
-	if ((VIBRATE == 1 && tMin == 30) || (VIBRATE == 2 && (tMin == 15 || tMin == 30 || tMin == 45))) {
-		if (tMin == 15) {
-			static const uint32_t const segments15[] = { 100 };
+	if (t->tm_min == 0) {
+		vibes_long_pulse();
+	} else if ((VIBRATE == 1 && t->tm_min == 30) || (VIBRATE == 2 && (t->tm_min == 15 || t->tm_min == 30 || t->tm_min == 45))) {
+		if (t->tm_min == 15) {
+			static const uint32_t const segments15[] = { 100, 100 };
+			VibePattern pat15 = { .durations = segments15, .num_segments = ARRAY_LENGTH(segments15) };
+			vibes_enqueue_custom_pattern(pat15);
 		}
 		
-		if (tMin == 30) {
-			static const uint32_t const segments30[] = { 100, 100, 100 };
+		if (t->tm_min == 30) {
+			static const uint32_t const segments30[] = { 100, 100, 100, 100 };
+			VibePattern pat30 = { .durations = segments30, .num_segments = ARRAY_LENGTH(segments30) };
+			vibes_enqueue_custom_pattern(pat30);
 		}
 		
-		if (tMin == 45) {
+		if (t->tm_min == 45) {
 			static const uint32_t const segments45[] = { 100, 100, 100, 100, 100, 100 };
+			VibePattern pat45 = { .durations = segments45, .num_segments = ARRAY_LENGTH(segments45) };
+			vibes_enqueue_custom_pattern(pat45);
 		}
 	}
-	
-	VibePattern pat = { .durations = segments, .num_segments = ARRAY_LENGTH(segments) };
-	
-	vibes_enqueue_custom_pattern(pat);
 }
 
 static void init() {
