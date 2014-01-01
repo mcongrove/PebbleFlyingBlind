@@ -50,7 +50,7 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
 							$options = array(
 								0 => 'On the hour',
 								1 => 'Every half-hour',
-								2 => 'Every fifteen-minutes'
+								2 => 'Every 15 minutes'
 							);
 							
 							foreach($options as $key => $option)
