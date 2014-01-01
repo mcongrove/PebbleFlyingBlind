@@ -11,6 +11,9 @@ static int VIBRATE = 0;
 
 Window *window;
 InverterLayer *inverter_layer;
+TextLayer *label_layer_time;
+char timeText[] = "00:00";
+static AppTimer *timer;
 
 enum {
 	KEY_THEME,
@@ -62,9 +65,32 @@ static void in_dropped_handler(AppMessageResult reason, void *context) {
 	
 }
 
+static void timer_callback(void *data) {
+	layer_set_hidden(text_layer_get_layer(label_layer_time), true);
+}
+
+static void handle_tap(AccelAxisType axis, int32_t direction) {
+	layer_set_hidden(text_layer_get_layer(label_layer_time), false);
+	
+	timer = app_timer_register(3000, timer_callback, NULL);
+}
+
 static void handle_minute_tick(struct tm *tick_time, TimeUnits units_changed) {
 	time_t now = time(NULL);
 	struct tm *t = localtime(&now);
+	
+	char *time_format;
+	
+	// Set the current time display
+	if(clock_is_24h_style()) {
+		time_format = "%R";
+	} else {
+		time_format = "%I:%M";
+	}
+	
+	strftime(timeText, sizeof(timeText), time_format, t);
+	
+	text_layer_set_text(label_layer_time, timeText);
 	
 	if (t->tm_min == 0) {
 		vibes_long_pulse();
@@ -101,11 +127,21 @@ static void init() {
 	Layer *window_layer = window_get_root_layer(window);
 	GRect bounds = layer_get_bounds(window_layer);
 	
+	// Add time layer
+	label_layer_time = text_layer_create(GRect(0, 65, 144, 30));
+	text_layer_set_text_color(label_layer_time, GColorBlack);
+	text_layer_set_background_color(label_layer_time, GColorClear);
+	text_layer_set_text_alignment(label_layer_time, GTextAlignmentCenter);
+	text_layer_set_font(label_layer_time, fonts_get_system_font(FONT_KEY_GOTHIC_28));
+	layer_set_hidden(text_layer_get_layer(label_layer_time), true);
+	layer_add_child(window_layer, text_layer_get_layer(label_layer_time));
+	
 	// Create the inverter layer
 	inverter_layer = inverter_layer_create(bounds);
 	layer_add_child(window_layer, inverter_layer_get_layer(inverter_layer));
 	
 	tick_timer_service_subscribe(MINUTE_UNIT, handle_minute_tick);
+	accel_tap_service_subscribe(handle_tap);
 	
 	set_theme();
 	set_vibrate();
@@ -116,6 +152,7 @@ static void deinit() {
 	inverter_layer_destroy(inverter_layer);
 	
 	tick_timer_service_unsubscribe();
+	accel_tap_service_unsubscribe();
 	app_message_deregister_callbacks();
 }
 
