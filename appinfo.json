@@ -1,0 +1,28 @@
+{
+	"uuid": "e6fede97-0806-43e2-9159-54638cd13253",
+	"shortName": "Flying Blind",
+	"longName": "Flying Blind",
+	"companyName": "Matthew Congrove",
+	"versionCode": 1,
+	"versionLabel": "1.0.0",
+	"watchapp": {
+		"watchface": true
+	},
+	"capabilities": [
+		"configurable"
+	],
+	"appKeys": {
+		"theme": 0,
+		"alert": 1
+	},
+	"resources": {
+		"media": [
+			{
+				"menuIcon": true,
+				"type": "png",
+				"name": "IMAGE_MENU_ICON",
+				"file": "images/menu_icon.png"
+			}
+		]
+	}
+}
