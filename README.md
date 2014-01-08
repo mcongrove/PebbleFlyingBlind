@@ -1,6 +1,8 @@
 # Flying Blind for Pebble
 
-A Pebble watch face that vibrates on the hour. Optionally, you can receive vibrations every fifteen minutes or on the half-hour. To see the time, shake the watch.
+A Pebble watch face that vibrates the time. Optionally vibrates every half or quarter-hour. Shake your wrist to briefly see the time.
+
+Colors can be inverted and vibration intervals can be set by accessing the settings in the Pebble application.
 
 This code is open sourced under the Apache 2.0 license.
 
