@@ -5,9 +5,12 @@ Pebble.addEventListener("ready", function(e) {
 Pebble.addEventListener("showConfiguration", function(e) {
 	var options = JSON.parse(window.localStorage.getItem("options"));
 	
-	var url = "http://wearewearable.com/flying-blind/?v=1.0" +
-			  "&theme=" + encodeURIComponent(options["0"]) +
-			  "&vibrate=" + encodeURIComponent(options["1"][0]);
+	var url = "http://wearewearable.com/flying-blind/?v=1.0";
+	
+	if(options != null) {
+		url += "&theme=" + encodeURIComponent(options["0"]) +
+			"&vibrate=" + encodeURIComponent(options["1"][0]);
+	}
 	
 	Pebble.openURL(url);
 });
