@@ -22,7 +22,7 @@ enum {
 
 static void set_theme() {
 	if (persist_exists(KEY_THEME)) {
-		persist_read_string(KEY_THEME, THEME, 7);
+		persist_read_string(KEY_THEME, THEME, 6);
 	}
 	
 	APP_LOG(APP_LOG_LEVEL_INFO, "SELECTED THEME: %s", THEME);
