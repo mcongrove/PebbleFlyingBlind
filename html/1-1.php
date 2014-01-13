@@ -106,6 +106,8 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
 	</div>
 	
 	<script type="text/javascript">
+		PConfig.init();
+		
 		function handleThemeSelection(_event) {
 			switch(_event.target.id) {
 				case "theme-dark":
