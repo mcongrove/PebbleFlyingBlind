@@ -3,8 +3,8 @@
 	"shortName": "Flying Blind",
 	"longName": "Flying Blind",
 	"companyName": "Matthew Congrove",
-	"versionCode": 1,
-	"versionLabel": "1.0",
+	"versionCode": 2,
+	"versionLabel": "1.1",
 	"watchapp": {
 		"watchface": true
 	},
@@ -13,7 +13,7 @@
 	],
 	"appKeys": {
 		"theme": 0,
-		"alert": 1
+		"vibrate": 1
 	},
 	"resources": {
 		"media": [

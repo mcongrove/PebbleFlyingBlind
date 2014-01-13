@@ -16,8 +16,8 @@ char timeText[] = "00:00";
 static AppTimer *timer;
 
 enum {
-	KEY_THEME,
-	KEY_VIBRATE
+	KEY_THEME = 0x0,
+	KEY_VIBRATE = 0x1
 };
 
 static void set_theme() {
@@ -25,11 +25,11 @@ static void set_theme() {
 		persist_read_string(KEY_THEME, THEME, 6);
 	}
 	
-	APP_LOG(APP_LOG_LEVEL_INFO, "SELECTED THEME: %s", THEME);
-	
 	bool hide = strcmp(THEME, "light") == 0 ? true : false;
 	
 	layer_set_hidden(inverter_layer_get_layer(inverter_layer), hide);
+	
+	APP_LOG(APP_LOG_LEVEL_INFO, "SELECTED THEME: %s", THEME);
 }
 
 static void set_vibrate() {
@@ -44,21 +44,11 @@ static void in_received_handler(DictionaryIterator *iter, void *context) {
 	Tuple *theme_tuple = dict_find(iter, KEY_THEME);
 	Tuple *vibrate_tuple = dict_find(iter, KEY_VIBRATE);
 	
-	if (theme_tuple) {
-		persist_write_string(KEY_THEME, theme_tuple->value->cstring);
-		strncpy(THEME, theme_tuple->value->cstring, 6);
-		
-		set_theme();
-	}
-	
-	if (vibrate_tuple) {
-		int vibrate_data = vibrate_tuple->value->data[0];
-		
-		persist_write_int(KEY_VIBRATE, vibrate_data);
-		VIBRATE = vibrate_data;
-		
-		set_vibrate();
-	}
+	theme_tuple ? persist_write_string(KEY_THEME, theme_tuple->value->cstring) : false;
+	vibrate_tuple ? persist_write_int(KEY_VIBRATE, vibrate_tuple->value->uint8) : false;
+
+	set_theme();
+	set_vibrate();
 }
 
 static void in_dropped_handler(AppMessageResult reason, void *context) {
